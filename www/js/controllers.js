@@ -12,10 +12,10 @@ angular.module('app.controllers', [ 'ngResource' ])
 	
 	var setHotdish = function(data) {
 		if (!data.list || data.list.length == 0) {
-			$scope.hotdishes = null;
+			$scope.hotDishes = null;
 			return;
 		}
-		$scope.hotdishes = data.list;
+		$scope.hotDishes = data.list;
 	};
 	
 	var getColddish = function(){
@@ -27,10 +27,25 @@ angular.module('app.controllers', [ 'ngResource' ])
 	
 	var setColddish = function(data) {
 		if (!data.list || data.list.length == 0) {
-			$scope.colddishes = null;
+			$scope.coldDishes = null;
 			return;
 		}
-		$scope.colddishes = data.list;
+		$scope.coldDishes = data.list;
+	};
+	
+	var getServeddish = function(){
+		GET.url = baseUrl + 'kitchen/served/orders';
+		$http(GET).success(setServeddish).error(function(data) {
+			alert(data);
+		});
+	};
+	
+	var setServeddish = function(data) {
+		if (!data.list || data.list.length == 0) {
+			$scope.servedDishes = null;
+			return;
+		}
+		$scope.servedDishes = data.list;
 	};
 	
 	var done = function(id, type, setter){
@@ -50,13 +65,35 @@ angular.module('app.controllers', [ 'ngResource' ])
 	$scope.hotDone  = function(id){
 		done(id, 'hot', setHotdish);
 	}
-	
-	$scope.refresh  = function(){
-		getColddish();
-		getHotdish();
+
+	$scope.cancelServed  = function(id){
+		PUT.url = baseUrl + 'order/revert/' + id;
+
+		$http(PUT).success(function(data) {
+			setDashboard(data);
+		}).error(function(data) {
+			alert(data);
+		});
 	}
 	
+	var setDashboard = function(data) {
+		if (!data) {
+			$scope.servedDishes = null;
+			$scope.coldDishes = null;
+			$scope.hotDishes = null;
+			return;
+		}
+		$scope.coldDishes = data.coldDishes;
+		$scope.servedDishes = data.servedDishes;
+		$scope.hotDishes = data.hotDishes;
+	};
 	
-	getColddish();
-	getHotdish();
+	$scope.refresh  = function(){
+		GET.url = baseUrl + 'kitchen/dashboard/';
+		$http(GET).success(setDashboard).error(function(data) {
+			alert(data);
+		});
+	}
+	
+	$scope.refresh();
 })

@@ -11,11 +11,10 @@
                 		hot dishes
 				</div>
                 <div class="list">
-					<div ng-repeat="order in hotdishes" class="item item-thumbnail-left" ng-dblclick="hotDone(order.id)">
+					<div ng-repeat="order in hotDishes" class="item item-thumbnail-left" ng-dblclick="hotDone(order.id)">
 						<h2>Product Name: {{ order.product.productName }}</h2>
 						<h2>category Name: {{ order.category.name }}</h2>
-						<h2 ng-if="order.turnover.tableId > 0">Table No: {{ order.turnover.tableId }}</h2>
-						<h2 ng-if="order.turnover.takeawayId > 0">Takeaway No: {{ order.turnover.takeawayId }}</h2>
+						<h2>Table No: {{ order.turnover.tableId }}</h2>
 						<h2>Count: {{order.count}}</h2>
 						 <div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
 							<h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
@@ -28,11 +27,26 @@
                 		cold dishes
 				</div>
                 <div class="list">
-                   <div ng-repeat="order in colddishes" class="item item-thumbnail-left"  ng-dblclick="coldDone(order.id)">
+                   <div ng-repeat="order in coldDishes" class="item item-thumbnail-left"  ng-dblclick="coldDone(order.id)">
 						<h2>Product Name: {{ order.product.productName }}</h2>
 						<h2>category Name: {{ order.category.name }}</h2>
-						<h2 ng-if="order.turnover.tableId > 0">Table No: {{ order.turnover.tableId }}</h2>
-						<h2 ng-if="order.turnover.takeawayId > 0">Takeaway No: {{ order.turnover.takeawayId }}</h2>
+						<h2>Table No: {{ order.turnover.tableId }}</h2>
+						<h2>Count: {{order.count}}</h2>
+						 <div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
+							<h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="col">
+            	<div class="item item-thumbnail-left" >
+                		served dishes
+				</div>
+                <div class="list">
+                   <div ng-repeat="order in servedDishes" class="item item-thumbnail-left"  ng-dblclick="cancelServed(order.id)">
+						<h2>Product Name: {{ order.product.productName }}</h2>
+						<h2>category Name: {{ order.category.name }}</h2>
+						<h2>Table No: {{ order.turnover.tableId }}</h2>
 						<h2>Count: {{order.count}}</h2>
 						 <div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
 							<h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
