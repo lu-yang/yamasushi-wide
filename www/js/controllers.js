@@ -30,27 +30,22 @@ angular.module('app.controllers', [ 'ngResource' ])
 			$scope.coldDishes = null;
 			return;
 		}
-<<<<<<< Updated upstream
 		$scope.coldDishes = data.list;
 	};
-	
+
 	var getServeddish = function(){
 		GET.url = baseUrl + 'kitchen/served/orders';
 		$http(GET).success(setServeddish).error(function(data) {
 			alert(data);
 		});
 	};
-	
+
 	var setServeddish = function(data) {
 		if (!data.list || data.list.length == 0) {
 			$scope.servedDishes = null;
 			return;
 		}
 		$scope.servedDishes = data.list;
-=======
-		$scope.colddishes = data.list;
-		console.log($scope.colddishes);
->>>>>>> Stashed changes
 	};
 
 	var done = function(id, type, setter){
@@ -71,7 +66,6 @@ angular.module('app.controllers', [ 'ngResource' ])
 		done(id, 'hot', setHotdish);
 	}
 
-<<<<<<< Updated upstream
 	$scope.cancelServed  = function(id){
 		PUT.url = baseUrl + 'order/revert/' + id;
 
@@ -81,7 +75,7 @@ angular.module('app.controllers', [ 'ngResource' ])
 			alert(data);
 		});
 	}
-	
+
 	var setDashboard = function(data) {
 		if (!data) {
 			$scope.servedDishes = null;
@@ -93,22 +87,13 @@ angular.module('app.controllers', [ 'ngResource' ])
 		$scope.servedDishes = data.servedDishes;
 		$scope.hotDishes = data.hotDishes;
 	};
-	
-=======
->>>>>>> Stashed changes
+
 	$scope.refresh  = function(){
 		GET.url = baseUrl + 'kitchen/dashboard/';
 		$http(GET).success(setDashboard).error(function(data) {
 			alert(data);
 		});
 	}
-<<<<<<< Updated upstream
-	
+
 	$scope.refresh();
-=======
-
-
-	getColddish();
-	getHotdish();
->>>>>>> Stashed changes
 })
