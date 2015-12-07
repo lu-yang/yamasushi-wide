@@ -1,7 +1,7 @@
 angular.module('app.controllers', [ 'ngResource' ])
 
 .controller('pageCtrl', function($scope, $http) {
-	
+
 	var getHotdish = function(){
 		GET.url = baseUrl + 'kitchen/hot/orders';
 
@@ -9,7 +9,7 @@ angular.module('app.controllers', [ 'ngResource' ])
 			alert(data);
 		});
 	};
-	
+
 	var setHotdish = function(data) {
 		if (!data.list || data.list.length == 0) {
 			$scope.hotDishes = null;
@@ -17,19 +17,20 @@ angular.module('app.controllers', [ 'ngResource' ])
 		}
 		$scope.hotDishes = data.list;
 	};
-	
+
 	var getColddish = function(){
 		GET.url = baseUrl + 'kitchen/cold/orders';
 		$http(GET).success(setColddish).error(function(data) {
 			alert(data);
 		});
 	};
-	
+
 	var setColddish = function(data) {
 		if (!data.list || data.list.length == 0) {
 			$scope.coldDishes = null;
 			return;
 		}
+<<<<<<< Updated upstream
 		$scope.coldDishes = data.list;
 	};
 	
@@ -46,8 +47,12 @@ angular.module('app.controllers', [ 'ngResource' ])
 			return;
 		}
 		$scope.servedDishes = data.list;
+=======
+		$scope.colddishes = data.list;
+		console.log($scope.colddishes);
+>>>>>>> Stashed changes
 	};
-	
+
 	var done = function(id, type, setter){
 		PUT.url = baseUrl + 'order/serve/'+type + '/' + id;
 
@@ -57,15 +62,16 @@ angular.module('app.controllers', [ 'ngResource' ])
 			alert(data);
 		});
 	};
-	
+
 	$scope.coldDone  = function(id){
 		done(id, 'cold', setColddish);
 	};
-	
+
 	$scope.hotDone  = function(id){
 		done(id, 'hot', setHotdish);
 	}
 
+<<<<<<< Updated upstream
 	$scope.cancelServed  = function(id){
 		PUT.url = baseUrl + 'order/revert/' + id;
 
@@ -88,12 +94,21 @@ angular.module('app.controllers', [ 'ngResource' ])
 		$scope.hotDishes = data.hotDishes;
 	};
 	
+=======
+>>>>>>> Stashed changes
 	$scope.refresh  = function(){
 		GET.url = baseUrl + 'kitchen/dashboard/';
 		$http(GET).success(setDashboard).error(function(data) {
 			alert(data);
 		});
 	}
+<<<<<<< Updated upstream
 	
 	$scope.refresh();
+=======
+
+
+	getColddish();
+	getHotdish();
+>>>>>>> Stashed changes
 })

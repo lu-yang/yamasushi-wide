@@ -27,7 +27,11 @@
                 		cold dishes
 				</div>
                 <div class="list">
+<<<<<<< Updated upstream
                    <div ng-repeat="order in coldDishes" class="item item-thumbnail-left"  ng-dblclick="coldDone(order.id)">
+=======
+            <div ng-repeat="order in colddishes" class="item item-thumbnail-left"  ng-dblclick="coldDone(order.id)">
+>>>>>>> Stashed changes
 						<h2>Product Name: {{ order.product.productName }}</h2>
 						<h2>category Name: {{ order.category.name }}</h2>
 						<h2>Table No: {{ order.turnover.tableId }}</h2>
@@ -48,6 +52,9 @@
 						<h2>category Name: {{ order.category.name }}</h2>
 						<h2>Table No: {{ order.turnover.tableId }}</h2>
 						<h2>Count: {{order.count}}</h2>
+						<h2>Status: {{order.status}}</h2>
+						<h2>Time: {{order.created | date: 'dd-MMM-yy hh:mm'}}</h2>
+						<h2>Updated: {{order.updated | date: 'dd-MMM-yy hh:mm'}}</h2>
 						 <div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
 							<h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
 						</div>
