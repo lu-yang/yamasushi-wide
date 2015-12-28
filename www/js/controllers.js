@@ -1,10 +1,10 @@
-angular.module('starter.controllers', [ 'ngResource' ])
+angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
-.controller('pageCtrl', function($scope, $http) {
+.controller('pageCtrl', function($scope, $http, $loadingHelpers,$interval) {
+
 
 	var getHotdish = function(){
 		GET.url = baseUrl + 'kitchen/hot/orders';
-
 		$http(GET).success(setHotdish).error(function(data) {
 			alert(data);
 		});
@@ -63,7 +63,8 @@ angular.module('starter.controllers', [ 'ngResource' ])
 	};
 
 	$scope.hotDone  = function(id){
-		done(id, 'hot', setHotdish);
+		 done(id, 'hot', setHotdish);
+
 	}
 
 	$scope.cancelServed  = function(id){
@@ -74,7 +75,7 @@ angular.module('starter.controllers', [ 'ngResource' ])
 		}).error(function(data) {
 			alert(data);
 		});
-	}
+	};
 
 	var setDashboard = function(data) {
 		if (!data) {
@@ -89,11 +90,51 @@ angular.module('starter.controllers', [ 'ngResource' ])
 	};
 
 	$scope.refresh  = function(){
+
+		$loadingHelpers.loadingShow();
 		GET.url = baseUrl + 'kitchen/dashboard/';
-		$http(GET).success(setDashboard).error(function(data) {
+		$http(GET).success(function(data){
+					if(!data){
+						console.log('no data');
+						$loadingHelpers.loadingHide();
+					}else{
+ 						t = 60;
+						$scope.t = t;
+						setDashboard(data);
+						$loadingHelpers.loadingHide();
+					}
+
+		}).error(function(data) {
 			alert(data);
+			$loadingHelpers.loadingHide();
 		});
 	}
 
-	$scope.refresh();
+	$scope.doRefresh = function(){
+		$scope.refresh();
+		$scope.$broadcast('scroll.refreshComplete');
+	};
+
+
+	var t = 60;
+	var timeCount = function(){
+		$interval(function () {
+
+				if(t > 1){
+					t = t-1;
+				}else if(t==1){
+					t = 60;
+				}
+				$scope.t = t;
+		}, 1000);
+	}
+
+
+	var init = function(){
+		timeCount();
+		// getHotdish();
+		// getColddish();
+		$scope.refresh();
+	}
+	init();
 })

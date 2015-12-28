@@ -23,6 +23,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ])
   	}
   })
   .state('app.tabs.list', {
+    cache:false,
     url: '/list',
     views : {
       'tab-list' : {
@@ -32,6 +33,7 @@ angular.module('starter', ['ionic', 'starter.controllers' ])
     }
   })
   .state('app.tabs.orderHistory', {
+    cache:false,
     url: '/history',
     views : {
       'tab-history' : {
