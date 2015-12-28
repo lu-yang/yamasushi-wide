@@ -1,4 +1,4 @@
-angular.module('app.controllers', [ 'ngResource' ])
+angular.module('starter.controllers', [ 'ngResource' ])
 
 .controller('pageCtrl', function($scope, $http) {
 

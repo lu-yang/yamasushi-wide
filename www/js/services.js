@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('starter.services', [])
 
 .factory('BlankFactory', [function(){
 
@@ -8,7 +8,7 @@ angular.module('app.services', [])
 
 }]);
 
-var baseUrl = 'http://localhost:8080/santhiya/';
+var baseUrl = 'http://192.168.2.2:8080/santhiya/';
 var authorization = 'YWRtaW46cGFzMndvcmQ=';
 var locale = 'fr';
 

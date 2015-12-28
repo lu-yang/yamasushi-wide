@@ -1,0 +1,49 @@
+<ion-view view-title="List d'attente">
+	<ion-nav-buttons side="right">
+		<button class="button pull-right" ng-click="refresh()">
+			Refresh
+		</button>
+	</ion-nav-buttons>
+	<ion-content  class="has-header">
+		<div class="row">
+			<div class="col">
+				<div class="item item-divider" >
+					Plats chaud
+				</div>
+				<div class="list">
+					<div ng-repeat="order in hotDishes" class="item item-thumbnail-left" ng-dblclick="hotDone(order.id)">
+						<h2>Product Name: {{ order.product.productName }}</h2>
+						<h2>category Name: {{ order.category.name }}</h2>
+						<h2>Table No: {{ order.turnover.tableId }}</h2>
+						<h2>Count: {{order.count}}</h2>
+						<div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
+							<h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="item item-divider" >
+					Plats froid
+				</div>
+				<div class="card">
+					<div ng-repeat="order in coldDishes" class="item item-text-wrap"  ng-dblclick="coldDone(order.id)">
+						<div class="item item-divider">
+						{{order.count}} x	<span class="assertive">{{ order.category.name }}</span> - {{ order.product.productName }}
+						<h2 class="pull-right">T-{{ order.turnover.tableId }}</h2>
+						</div>
+
+						<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
+						<div class="row">
+							<div ng-repeat="oa in order.orderAttributions" class="col">
+								<span>{{ oa.attribution.attributionName }}</span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</ion-content>
+</ion-view>
