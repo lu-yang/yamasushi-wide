@@ -4,3 +4,12 @@
 .pull-right{
   float: right;
 }
+.text-big{
+  font-size: 20px;
+}
+.card{
+  margin:0;
+}
+.item{
+  padding:0px;
+}

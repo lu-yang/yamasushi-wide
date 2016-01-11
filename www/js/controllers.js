@@ -163,14 +163,14 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
 
 	var t = 30;
-	var timeCount = function(){
+	 $scope.timeCount = function(){
 		$interval(function () {
 
 			if(t > 1){
 				t = t-1;
 			}else if(t==1){
 				t = 30;
-				$scope.refresh();
+				init();
 			}
 			$scope.t = t;
 
@@ -179,8 +179,19 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
 
 	var init = function(){
-		timeCount();
-		$scope.refresh();
-	}
+		$scope.timeCount();
+
+		GET.url = baseUrl + 'kitchen/dashboard/';
+		$http(GET).success(function(data){
+			if(!data){
+				console.log('no data');
+			}else{
+				setDashboard(data);
+			}
+		}).error(function(data) {
+			alert(data);
+
+		});
+	 }
 	init();
 })
