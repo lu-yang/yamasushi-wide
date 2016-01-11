@@ -1,0 +1,17 @@
+
+<ion-modal-view class="mymodal">
+  <ion-header-bar>
+    <h1 class="title">Actions:</h1>
+    <button class="button  button-dark closeBtn" ng-click="closeModal()"><i class="icon ion-close-circled"></i></button>
+  </ion-header-bar>
+  <ion-content class="padding">
+
+      <button type="button" class="button button-positive button-block padding" ng-if="isServed == false" ng-click="reminder(itemId,isHot)"> <i class="ion ion-flash"></i> Mettre à l'avance</button>
+      <button type="button" class="button button-balanced button-block padding" ng-if="isServed == false && isHot != false" ng-click="hotDone(itemId)"> <i class="ion ion-android-restaurant"></i> Marque comme servi</button>
+      <button type="button" class="button button-balanced button-block padding" ng-if="isServed == false && isHot == false" ng-click="coldDone(itemId)"> <i class="ion ion-android-restaurant"></i> Marque comme servi</button>
+      <button type="button" class="button button-assertive button-block padding" ng-if="isServed != false" ng-click="cancelServed(itemId)"> <i class="ion ion-android-cancel"></i> Remets dans la liste</button>
+
+
+
+  </ion-content>
+</ion-modal-view>

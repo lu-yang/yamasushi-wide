@@ -1,66 +1,82 @@
 <ion-view view-title="List d'attente">
 	<ion-nav-buttons side="right">
-		<button class="button pull-right button-assertive" ng-click="refresh()">
-			<i class="ion ion-refresh"></i> Refresh {{t}}s
+		<button class="button button-assertive" ng-click="refresh()">
+			<i class="ion ion-refresh"></i> Recharge {{t}}s
 		</button>
 	</ion-nav-buttons>
 
-		<div class="bar bar-subheader">
-			<div class="row">
-				<div class="col text-center" >
-					<i class="ion ion-fireball"></i> Plats chaud
-				</div>
-				<div class="col text-center" >
-					<i class="ion ion-ios-snowy"></i> Plats chaud
-				</div>
+	<div class="bar bar-subheader">
+		<div class="row">
+			<div class="col text-center ">
+				<h3 class="assertive"><i class="ion ion-fireball"></i> Plats chaud</h3>
+			</div>
+			<div class="col text-center">
+				<h3 class="positive"><i class="ion ion-ios-snowy"></i> Plats chaud</h3>
 			</div>
 		</div>
+	</div>
 
 	<ion-content  class="has-header has-subheader">
 		<ion-refresher
-	pulling-text="Tirer pour recharger..."
-	on-refresh="doRefresh()">
-</ion-refresher>
+		pulling-text="Tirer pour recharger..."
+		on-refresh="doRefresh()">
+	</ion-refresher>
 
 
-		<div class="row">
-			<div class="col">
-
-				<div class="card">
-					<div ng-repeat="order in hotDishes" class="item item-text-wrap" ng-dblclick="hotDone(order.id)">
-						<div class="item item-divider">
-						{{order.count}} x	<span class="assertive">{{ order.category.name }}</span> - {{ order.product.productName }}
-						<h2 class="pull-right">T-{{ order.turnover.tableId }}</h2>
-						</div>
-	<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
 	<div class="row">
-		<div ng-repeat="oa in order.orderAttributions" class="col">
-			<span>{{ oa.attribution.attributionName }}</span>
-		</div>
-	</div>
+		<div class="col">
+
+			<div class="card">
+				<div ng-repeat="order in hotDishes" class="item item-text-wrap"  ng-click = "openHotModal(order.id,false)"> <!-- ng-dblClick="hotDone(order.id)" -->
+					<div class="item item-divider item-assertive">
+						{{order.count}} x	<span >{{ order.product.productName }}</span> - <small class="dark">{{ order.category.name }}</small>
+						<h2 class="pull-right light" ng-if="order.status >1"><span ng-repeat="t in getTimes(order.status) track by $index" class="energized"><i class="ion ion-alert"></i></span></h2>
 					</div>
-				</div>
-			</div>
-			<div class="col">
 
-				<div class="card">
-					<div ng-repeat="order in coldDishes" class="item item-text-wrap"  ng-dblclick="coldDone(order.id)">
-						<div class="item item-divider">
-						{{order.count}} x	<span class="assertive">{{ order.category.name }}</span> - {{ order.product.productName }}
-						<h2 class="pull-right">T-{{ order.turnover.tableId }}</h2>
+					<div class="row">
+						<div class="col col-20">
+							<h1 class="padding-top assertive">T-{{ order.turnover.tableId }}</h1>
+							<h2 class="padding-left">{{order.created | date :"HH:mm"}}</h2>
 						</div>
-
-						<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
-						<div class="row">
-							<div ng-repeat="oa in order.orderAttributions" class="col">
-								<span>{{ oa.attribution.attributionName }}</span>
+						<div class="col col-80">
+							<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
+							<div class="row">
+								<div ng-repeat="oa in order.orderAttributions" class="col">
+									<small>{{ oa.attribution.attributionName }}</small>
+								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
-
 		</div>
-	</ion-content>
+		<div class="col">
+
+			<div class="card">
+				<div ng-repeat="order in coldDishes" class="item item-text-wrap"  ng-click="openColdModal(order.id,false)">
+					<div class="item item-divider item-positive">
+						{{order.count}} x	<span class="stable">{{ order.product.productName }}</span> - <small class="dark">{{ order.category.name }}</small>
+							<h2 class="pull-right light" ng-if="order.status >1"><span ng-repeat="t in getTimes(order.status) track by $index" class="energized"><i class="ion ion-alert"></i></span></h2>
+					</div>
+					<div class="row">
+						<div class="col col-20">
+							<h1 class="padding-top positive">T-{{ order.turnover.tableId }}</h1>
+							<h2 class="padding-left">{{order.created | date :"HH:mm"}}</h2>
+						</div>
+						<div class="col col-80">
+							<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
+							<div class="row">
+								<div ng-repeat="oa in order.orderAttributions" class="col">
+									<small>{{ oa.attribution.attributionName }}</small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</ion-content>
 </ion-view>

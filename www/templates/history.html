@@ -1,22 +1,36 @@
 <ion-view view-title="Plats déjà servi">
   <ion-nav-buttons side="right">
-    <button class="button" ng-click="refresh()">
-      Refresh
+    <button class="button button-assertive" ng-click="refresh()">
+      	<i class="ion ion-refresh"></i> Recharge {{t}}s
     </button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
-    <div class="col">
-      <div class="list">
-        <div ng-repeat="order in servedDishes" class="item item-thumbnail-left"  ng-dblclick="cancelServed(order.id)">
-          <h2>Product Name: {{ order.product.productName }}</h2>
-          <h2>category Name: {{ order.category.name }}</h2>
-          <h2>Table No: {{ order.turnover.tableId }}</h2>
-          <h2>Count: {{order.count}}</h2>
-          <div ng-repeat="oa in order.orderAttributions" class="item item-thumbnail-left">
-            <h2>Attribution Name: {{ oa.attribution.attributionName }} * {{oa.count}}</h2>
+    <ion-refresher
+	pulling-text="Tirer pour recharger..."
+	on-refresh="doRefresh()">
+</ion-refresher>
+      <div class="card">
+        <div ng-repeat="order in servedDishes" class="item item-text-wrap"  ng-click="openServedModal(order.id,true)">
+          <div class="item item-divider ">
+          {{order.count}} x	<span>{{ order.product.productName }}</span> - <small>{{ order.category.name }}</small>
           </div>
+          <div class="row">
+						<div class="col col-20">
+							<h1 class="padding-top positive">T-{{ order.turnover.tableId }}</h1>
+							<h2 class="padding-left">{{order.created | date :"HH:mm"}}</h2>
+              <h2 class="padding-left">{{order.served | date :"HH:mm"}}</h2>
+						</div>
+						<div class="col col-80">
+							<h2 class="assertive padding-left padding-top" ng-if="order.orderAttributions">Options: </h2>
+							<div class="row">
+								<div ng-repeat="oa in order.orderAttributions" class="col">
+									<small>{{ oa.attribution.attributionName }}</small>
+								</div>
+							</div>
+						</div>
+					</div>
         </div>
       </div>
-    </div>
+
   </ion-content>
 </ion-view>

@@ -8,7 +8,7 @@ angular.module('starter.services', [])
 
 }]);
 
-var baseUrl = 'http://192.168.2.2:8080/santhiya/';
+var baseUrl = '';
 var authorization = 'YWRtaW46cGFzMndvcmQ=';
 var locale = 'fr';
 

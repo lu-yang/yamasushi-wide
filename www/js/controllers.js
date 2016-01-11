@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
-.controller('pageCtrl', function($scope, $http, $loadingHelpers,$interval) {
+.controller('pageCtrl', function($scope, $http, $loadingHelpers,$interval,$ionicModal) {
 
 
 	var getHotdish = function(){
@@ -53,30 +53,73 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
 		$http(PUT).success(function(data) {
 			setter(data);
+			$scope.closeModal();
 		}).error(function(data) {
 			alert(data);
 		});
 	};
+
 
 	$scope.coldDone  = function(id){
 		done(id, 'cold', setColddish);
 	};
 
 	$scope.hotDone  = function(id){
-		 done(id, 'hot', setHotdish);
-
+		done(id, 'hot', setHotdish);
 	}
 
+	$scope.reminder = function(id,isHot){
+		PUT.url = baseUrl + 'order/reminder' + '/' + id;
+		$http(PUT).success(function(data) {
+			if(data.model){
+				getHotdish();
+				getColddish();
+				$scope.closeModal();
+			}
+		}).error(function(data) {
+			alert(data);
+		});
+
+	}
 	$scope.cancelServed  = function(id){
 		PUT.url = baseUrl + 'order/revert/' + id;
 
 		$http(PUT).success(function(data) {
 			setDashboard(data);
+			$scope.closeModal();
 		}).error(function(data) {
 			alert(data);
 		});
 	};
 
+
+	$ionicModal.fromTemplateUrl('templates/modalTpls/list.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.modal = modal;
+	});
+
+	$scope.openHotModal = function(id,isServed) {
+		$scope.modal.show();
+		$scope.itemId = id;
+		$scope.isServed = isServed;
+		$scope.isHot = true;
+	};
+	$scope.openColdModal = function(id,isServed) {
+		$scope.modal.show();
+		$scope.itemId = id;
+		$scope.isServed = isServed;
+		$scope.isHot = false;
+	};
+	$scope.openServedModal = function(id,isServed) {
+		$scope.modal.show();
+		$scope.itemId = id;
+		$scope.isServed = isServed;
+	};
+	$scope.closeModal = function(){
+		$scope.modal.hide();
+	}
 	var setDashboard = function(data) {
 		if (!data) {
 			$scope.servedDishes = null;
@@ -87,6 +130,11 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$scope.coldDishes = data.coldDishes;
 		$scope.servedDishes = data.servedDishes;
 		$scope.hotDishes = data.hotDishes;
+
+	};
+
+	$scope.getTimes=function(n){
+		return new Array(n);
 	};
 
 	$scope.refresh  = function(){
@@ -94,15 +142,13 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$loadingHelpers.loadingShow();
 		GET.url = baseUrl + 'kitchen/dashboard/';
 		$http(GET).success(function(data){
-					if(!data){
-						console.log('no data');
-						$loadingHelpers.loadingHide();
-					}else{
- 						t = 60;
-						$scope.t = t;
-						setDashboard(data);
-						$loadingHelpers.loadingHide();
-					}
+			if(!data){
+				console.log('no data');
+				$loadingHelpers.loadingHide();
+			}else{
+				setDashboard(data);
+				$loadingHelpers.loadingHide();
+			}
 
 		}).error(function(data) {
 			alert(data);
@@ -116,24 +162,24 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 	};
 
 
-	var t = 60;
+	var t = 30;
 	var timeCount = function(){
 		$interval(function () {
 
-				if(t > 1){
-					t = t-1;
-				}else if(t==1){
-					t = 60;
-				}
-				$scope.t = t;
+			if(t > 1){
+				t = t-1;
+			}else if(t==1){
+				t = 30;
+				$scope.refresh();
+			}
+			$scope.t = t;
+
 		}, 1000);
 	}
 
 
 	var init = function(){
 		timeCount();
-		// getHotdish();
-		// getColddish();
 		$scope.refresh();
 	}
 	init();
