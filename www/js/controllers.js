@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
-.controller('pageCtrl', function($scope, $http, $loadingHelpers,$interval,$ionicModal) {
+.controller('pageCtrl', function($scope, $http, $window, $loadingHelpers,$interval,$ionicModal,$location) {
 
 
 	var getHotdish = function(){
@@ -162,15 +162,16 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 	};
 
 
-	var t = 30;
+
 	 $scope.timeCount = function(){
+		 	var t = 30;
 		$interval(function () {
 
 			if(t > 1){
 				t = t-1;
 			}else if(t==1){
+				$window.location.reload(true);
 				t = 30;
-				init();
 			}
 			$scope.t = t;
 
@@ -184,7 +185,6 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		GET.url = baseUrl + 'kitchen/dashboard/';
 		$http(GET).success(function(data){
 			if(!data){
-				console.log('no data');
 			}else{
 				setDashboard(data);
 			}
