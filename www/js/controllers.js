@@ -195,7 +195,7 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 			alert(data);
 		});
 	};
-	
+
 	var init = function(){
 		$scope.timeCount();
 
