@@ -3,6 +3,21 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 .controller('pageCtrl', function($scope, $http, $window, $loadingHelpers,$interval,$ionicModal,$location) {
 
 
+	var getCombo = function(){
+		GET.url = baseUrl + 'kitchen/combo/orders';
+		$http(GET).success(setCombo).error(function(data) {
+			alert(data);
+		});
+	};
+
+	var setCombo = function(data) {
+		if (!data.list || data.list.length == 0) {
+			$scope.combos = null;
+			return;
+		}
+		$scope.combos = data.list;
+	};
+
 	var getHotdish = function(){
 		GET.url = baseUrl + 'kitchen/hot/orders';
 		$http(GET).success(setHotdish).error(function(data) {
@@ -59,21 +74,27 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		});
 	};
 
-
-	$scope.coldDone  = function(id){
-		done(id, 'cold', setColddish);
+	$scope.orderDone  = function(id, type){
+		switch(type) {
+			case 0:
+				done(id, 'cold', setColddish);
+				break;
+			case 1:
+				done(id, 'hot', setHotdish);
+				break;
+			case 2:
+				done(id, 'combo', setCombo);
+				break;
+			default:
+				alert("没有这个类型。");
+		}
 	};
-
-	$scope.hotDone  = function(id){
-		done(id, 'hot', setHotdish);
-	}
-
-	$scope.reminder = function(id,isHot){
+	
+	$scope.reminder = function(id){
 		PUT.url = baseUrl + 'order/reminder' + '/' + id;
 		$http(PUT).success(function(data) {
 			if(data.model){
-				getHotdish();
-				getColddish();
+				getDashboard();
 				$scope.closeModal();
 			}
 		}).error(function(data) {
@@ -83,7 +104,6 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 	}
 	$scope.cancelServed  = function(id){
 		PUT.url = baseUrl + 'order/revert/' + id;
-
 		$http(PUT).success(function(data) {
 			setDashboard(data);
 			$scope.closeModal();
@@ -100,18 +120,13 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$scope.modal = modal;
 	});
 
-	$scope.openHotModal = function(id,isServed) {
+	$scope.openModal = function(id, isServed, type) {
 		$scope.modal.show();
 		$scope.itemId = id;
 		$scope.isServed = isServed;
-		$scope.isHot = true;
+		$scope.type = type;
 	};
-	$scope.openColdModal = function(id,isServed) {
-		$scope.modal.show();
-		$scope.itemId = id;
-		$scope.isServed = isServed;
-		$scope.isHot = false;
-	};
+
 	$scope.openServedModal = function(id,isServed) {
 		$scope.modal.show();
 		$scope.itemId = id;
@@ -125,12 +140,13 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 			$scope.servedDishes = null;
 			$scope.coldDishes = null;
 			$scope.hotDishes = null;
+			$scope.combos = null;
 			return;
 		}
 		$scope.coldDishes = data.coldDishes;
 		$scope.servedDishes = data.servedDishes;
 		$scope.hotDishes = data.hotDishes;
-
+		$scope.combos = data.combos;
 	};
 
 	$scope.getTimes=function(n){
@@ -138,7 +154,6 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 	};
 
 	$scope.refresh  = function(){
-
 		$loadingHelpers.loadingShow();
 		GET.url = baseUrl + 'kitchen/dashboard/';
 		$http(GET).success(function(data){
@@ -161,12 +176,9 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$scope.$broadcast('scroll.refreshComplete');
 	};
 
-
-
-	 $scope.timeCount = function(){
-		 	var t = 30;
+	$scope.timeCount = function(){
+		var t = 300;
 		$interval(function () {
-
 			if(t > 1){
 				t = t-1;
 			}else if(t==1){
@@ -174,24 +186,20 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 				t = 30;
 			}
 			$scope.t = t;
-
 		}, 1000);
 	}
 
-
+	var getDashboard = function(){
+		GET.url = baseUrl + 'kitchen/dashboard/';
+		$http(GET).success(setDashboard).error(function(data) {
+			alert(data);
+		});
+	};
+	
 	var init = function(){
 		$scope.timeCount();
 
-		GET.url = baseUrl + 'kitchen/dashboard/';
-		$http(GET).success(function(data){
-			if(!data){
-			}else{
-				setDashboard(data);
-			}
-		}).error(function(data) {
-			alert(data);
-
-		});
+		getDashboard();
 	 }
 	init();
 })
