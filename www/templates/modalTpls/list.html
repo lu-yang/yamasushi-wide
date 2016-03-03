@@ -6,13 +6,13 @@
   </ion-header-bar>
   <ion-content class="padding">
 
-      <button type="button" class="button button-positive button-block padding" ng-if="isServed == false" ng-click="reminder(itemId)"> 
+      <button type="button" class="button button-positive button-block padding" ng-if="isServed == false" ng-click="reminder(orderId)"> 
       	<i class="ion ion-flash"></i> Mettre à l'avance
       </button>
-      <button type="button" class="button button-balanced button-block padding" ng-if="isServed == false" ng-click="orderDone(itemId, type)">
+      <button type="button" class="button button-balanced button-block padding" ng-if="isServed == false" ng-click="orderDone(orderId, type, productId)">
        <i class="ion ion-android-restaurant"></i> Marque comme servi
       </button>
-      <button type="button" class="button button-assertive button-block padding" ng-if="isServed != false" ng-click="cancelServed(itemId)"> 
+      <button type="button" class="button button-assertive button-block padding" ng-if="isServed != false" ng-click="cancelServed(orderId, productId)"> 
        <i class="ion ion-android-cancel"></i> Remets dans la liste
       </button>
 

@@ -10,7 +10,7 @@
 	on-refresh="doRefresh()">
 </ion-refresher>
       <div class="card">
-        <div ng-repeat="order in servedDishes" class="item item-text-wrap"  ng-click="openServedModal(order.id,true)">
+        <div ng-repeat="orderProductGroup in servedDishes" class="item item-text-wrap"  ng-init="product=getProduct(orderProductGroup); order=orderProductGroup.order" ng-click="openServedModal(order.id, true, product.id)">
 
           					<div class="row">
           						<div class="col col-20">
@@ -20,7 +20,7 @@
           						</div>
           						<div class="col col-60">
 
-          							<div class="text-big">{{order.count}} x	<span >{{ order.product.productName }}</span> </div>
+          							<div class="text-big">{{order.count}} x	<span >{{ product.productName }}</span> </div>
 
           							<div class="row">
           								<div ng-repeat="oa in order.orderAttributions" >

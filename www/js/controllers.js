@@ -63,8 +63,8 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$scope.servedDishes = data.list;
 	};
 
-	var done = function(id, type, setter){
-		PUT.url = baseUrl + 'order/serve/'+type + '/' + id;
+	var done = function(orderId, type, productId, setter){
+		PUT.url = baseUrl + 'order/serve/'+type + '/' + orderId + '/' + productId;
 
 		$http(PUT).success(function(data) {
 			setter(data);
@@ -74,17 +74,17 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		});
 	};
 
-	$scope.orderDone  = function(id, type){
+	$scope.orderDone  = function(orderId, type, productId){
 		switch(type) {
 			case 0:
-				done(id, 'cold', setColddish);
+				done(orderId, 'cold', productId, setColddish);
 				break;
 			case 1:
-				done(id, 'hot', setHotdish);
+				done(orderId, 'hot', productId, setHotdish);
 				break;
-			case 2:
-				done(id, 'combo', setCombo);
-				break;
+//			case 2:
+//				done(orderId, 'combo', productId, setCombo);
+//				break;
 			default:
 				alert("没有这个类型。");
 		}
@@ -103,7 +103,7 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
 	}
 	$scope.cancelServed  = function(id){
-		PUT.url = baseUrl + 'order/revert/' + id;
+		PUT.url = baseUrl + 'order/revert/'  + orderId + '/' + productId;
 		$http(PUT).success(function(data) {
 			setDashboard(data);
 			$scope.closeModal();
@@ -120,17 +120,19 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 		$scope.modal = modal;
 	});
 
-	$scope.openModal = function(id, isServed, type) {
+	$scope.openModal = function(orderId, isServed, type, productId) {
 		$scope.modal.show();
-		$scope.itemId = id;
+		$scope.orderId = orderId;
 		$scope.isServed = isServed;
 		$scope.type = type;
+		$scope.productId = productId;
 	};
 
-	$scope.openServedModal = function(id,isServed) {
+	$scope.openServedModal = function(orderId, isServed, productId) {
 		$scope.modal.show();
-		$scope.itemId = id;
+		$scope.orderId = orderId;
 		$scope.isServed = isServed;
+		$scope.productId = productId;
 	};
 	$scope.closeModal = function(){
 		$scope.modal.hide();
@@ -151,6 +153,14 @@ angular.module('starter.controllers', [ 'ngResource' ,'customHelpers'])
 
 	$scope.getTimes=function(n){
 		return new Array(n);
+	};
+	
+	$scope.getProduct = function(orderProductGroup){
+		var product = orderProductGroup.order.product;
+		if(product.type == 2){
+			product = orderProductGroup.product;
+		}
+		return product;
 	};
 
 	$scope.refresh  = function(){

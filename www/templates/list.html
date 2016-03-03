@@ -17,11 +17,6 @@
 					<i class="ion ion-ios-snowy"></i> Plats froids
 				</h3>
 			</div>
-			<div class="col text-center">
-				<h3 class="positive">
-					<i class="ion ion-ios-snowy"></i> Combo
-				</h3>
-			</div>
 		</div>
 	</div>
 
@@ -30,7 +25,7 @@
 		<div class="row">
 			<div class="col">
 				<div class="card">
-					<div ng-repeat="order in hotDishes" class="item item-text-wrap" ng-click="openModal(order.id, false, order.product.type)">
+					<div ng-repeat="orderProductGroup in hotDishes" class="item item-text-wrap" ng-init="product=getProduct(orderProductGroup); order=orderProductGroup.order" ng-click="openModal(order.id, false, product.type, product.id)">
 						<div class="row">
 							<div class="col col-20">
 								<div class="text-big assertive">T-{{order.turnover.tableId}}</div>
@@ -39,7 +34,7 @@
 							</div>
 							<div class="col col-60">
 								<div class="text-big">
-									{{order.count}} x <span>{{order.product.productName}}</span>
+									{{order.count}} x <span>{{product.productName}}</span>
 								</div>
 								<div class="row">
 									<div ng-repeat="oa in order.orderAttributions">
@@ -63,7 +58,7 @@
 			</div>
 			<div class="col">
 				<div class="card">
-					<div ng-repeat="order in coldDishes" class="item item-text-wrap" ng-click="openModal(order.id, false, order.product.type)">
+					<div ng-repeat="orderProductGroup in coldDishes" class="item item-text-wrap" ng-init="product=getProduct(orderProductGroup); order=orderProductGroup.order" ng-click="openModal(order.id, false, product.type, product.id)">
 						<div class="row">
 							<div class="col col-20">
 								<div class="text-big positive">T-{{order.turnover.tableId}}</div>
@@ -72,40 +67,7 @@
 							</div>
 							<div class="col col-60">
 								<div class="text-big">
-									{{order.count}} x <span>{{order.product.productName}}</span>
-								</div>
-								<div class="row">
-									<div ng-repeat="oa in order.orderAttributions">
-										<p>{{oa.attribution.attributionName}}</p>
-									</div>
-								</div>
-							</div>
-							<div class="col col-20">
-								<h2 class="">
-									<small>{{order.category.name}}</small>
-								</h2>
-								<hr>
-								<h2 class="light" ng-if="order.status >1">
-									<span ng-repeat="t in getTimes(order.status) track by $index" class="energized"><i class="ion ion-alert"></i> </span>
-								</h2>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card">
-					<div ng-repeat="order in combos" class="item item-text-wrap" ng-click="openModal(order.id, false, order.product.type)">
-						<!-- ng-dblClick="hotDone(order.id)" -->
-						<div class="row">
-							<div class="col col-20">
-								<div class="text-big assertive">T-{{order.turnover.tableId}}</div>
-								<hr>
-								<h2>{{order.created | date :"HH:mm"}}</h2>
-							</div>
-							<div class="col col-60">
-								<div class="text-big">
-									{{order.count}} x <span>{{order.product.productName}}</span>
+									{{order.count}} x <span>{{product.productName}}</span>
 								</div>
 								<div class="row">
 									<div ng-repeat="oa in order.orderAttributions">
